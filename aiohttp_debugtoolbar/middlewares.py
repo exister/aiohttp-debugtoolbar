@@ -46,11 +46,7 @@ def middleware(app, handler):
         p = request.raw_path
         starts_with_excluded = list(filter(None, map(p.startswith, exclude)))
 
-        # FIXME: error when run trough unixsocket
-        peername = request.headers.get('X-Real-IP') or request.remote
-        remote_host, remote_port = peername[:2]
-
-        last_proxy_addr = remote_host
+        last_proxy_addr = request.headers.get('X-Real-IP') or request.remote
 
         # TODO: rethink access policy by host
         if starts_with_excluded or not addr_in(last_proxy_addr, hosts):
