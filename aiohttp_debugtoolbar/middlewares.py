@@ -47,7 +47,7 @@ def middleware(app, handler):
         starts_with_excluded = list(filter(None, map(p.startswith, exclude)))
 
         # FIXME: error when run trough unixsocket
-        peername = request.transport.get_extra_info('peername')
+        peername = request.headers.get('X-Real-IP') or request.remote
         remote_host, remote_port = peername[:2]
 
         last_proxy_addr = remote_host
